@@ -1,52 +1,3 @@
---#### Schemas
-CREATE DATABASE sql_grand_test
-
-CREATE TABLE artists (
-artist_id INT PRIMARY KEY,
-name VARCHAR(100) NOT NULL,
-country VARCHAR(50) NOT NULL,
-birth_year INT NOT NULL
-);
-
-CREATE TABLE artworks (
-artwork_id INT PRIMARY KEY,
-title VARCHAR(200) NOT NULL,
-artist_id INT NOT NULL,
-genre VARCHAR(50) NOT NULL,
-price DECIMAL(10, 2) NOT NULL,
-FOREIGN KEY (artist_id) REFERENCES artists(artist_id)
-);
-
-CREATE TABLE sales (
-    sale_id INT PRIMARY KEY,
-    artwork_id INT NOT NULL,
-    sale_date DATE NOT NULL,
-    quantity INT NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (artwork_id) REFERENCES artworks(artwork_id)
-);
-
-INSERT INTO artists (artist_id, name, country, birth_year) VALUES
-(1, 'Vincent van Gogh', 'Netherlands', 1853),
-(2, 'Pablo Picasso', 'Spain', 1881),
-(3, 'Leonardo da Vinci', 'Italy', 1452),
-(4, 'Claude Monet', 'France', 1840),
-(5, 'Salvador Dal�', 'Spain', 1904);
-
-INSERT INTO artworks (artwork_id, title, artist_id, genre, price) VALUES
-(1, 'Starry Night', 1, 'Post-Impressionism', 1000000.00),
-(2, 'Guernica', 2, 'Cubism', 2000000.00),
-(3, 'Mona Lisa', 3, 'Renaissance', 3000000.00),
-(4, 'Water Lilies', 4, 'Impressionism', 500000.00),
-(5, 'The Persistence of Memory', 5, 'Surrealism', 1500000.00);
-
-INSERT INTO sales (sale_id, artwork_id, sale_date, quantity, total_amount) VALUES
-(1, 1, '2024-01-15', 1, 1000000.00),
-(2, 2, '2024-02-10', 1, 2000000.00),
-(3, 3, '2024-03-05', 1, 3000000.00),
-(4, 4, '2024-04-20', 2, 1000000.00);
-
-
 --### Section 1: 1 mark each
 
 --1. Write a query to calculate the price of 'Starry Night' plus 10% tax.
@@ -335,6 +286,23 @@ WHERE artwork_id=6
 --25. Create a stored procedure to add a new sale and update the total sales for the artwork. 
 --  Ensure the quantity is positive, and use transactions to maintain data integrity.
 
+GO
+ALTER PROCEDURE Saleupdate
+(
+  @artwork_id VARCHAR(50),
+  @total_amount INT
+)
+AS
+BEGIN
+	BEGIN TRANSACTION;
+            UPDATE sales
+            SET total_amount = @total_amount
+            WHERE EmployeeID = @EmployeeID;
+		COMMIT TRANSACTION;     
+END
+GO
+
+EXEC Saleupdate 
 --### Normalization (5 Marks)
 
 --26. **Question:**
