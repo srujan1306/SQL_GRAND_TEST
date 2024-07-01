@@ -295,6 +295,7 @@ ALTER PROCEDURE Saleupdate
 AS
 BEGIN
 	BEGIN TRANSACTION;
+			
             UPDATE sales
             SET total_amount = @total_amount
             WHERE EmployeeID = @EmployeeID;
@@ -302,7 +303,8 @@ BEGIN
 END
 GO
 
-EXEC Saleupdate 
+EXEC Saleupdate @artwork_id=4,
+				@total_amount=1000000
 --### Normalization (5 Marks)
 
 --26. **Question:**
